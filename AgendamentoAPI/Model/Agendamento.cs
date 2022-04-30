@@ -11,9 +11,9 @@ namespace AgendamentoAPI.Model
         [Required]
         public DateTime Data { get; set; }
 
+        [ForeignKey("Oficina")]
         public int OficinaId { get; set; }
-
-        public virtual Oficina Oficina { get; set; }
+        public Oficina Oficina { get; set; }
 
         [Column("tipoServico")]
         [Required]

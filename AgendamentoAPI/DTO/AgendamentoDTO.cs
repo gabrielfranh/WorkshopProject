@@ -8,8 +8,6 @@
 
         public int OficinaId { get; set; }
 
-        public virtual OficinaDTO Oficina { get; set; }
-
         public int TipoServico { get; set; }
     }
 }
