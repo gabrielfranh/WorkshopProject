@@ -6,5 +6,6 @@
         public string Cnpj { get; set; }
         public int CargaTrabalhoDiaria { get; set; }
         public string Senha { get; set; }
+        public byte[]? SenhaHash { get; set; }
     }
 }

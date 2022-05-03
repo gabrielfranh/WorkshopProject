@@ -37,6 +37,11 @@ namespace AgendamentoAPI.Migrations
                         .HasColumnType("int")
                         .HasColumnName("tipoServico");
 
+                    b.Property<int?>("UnidadeTrabalhoServico")
+                        .IsRequired()
+                        .HasColumnType("int")
+                        .HasColumnName("unidadeTrabalhoServico");
+
                     b.HasKey("Id");
 
                     b.HasIndex("OficinaId");
@@ -65,10 +70,10 @@ namespace AgendamentoAPI.Migrations
                         .HasColumnType("longtext")
                         .HasColumnName("nome");
 
-                    b.Property<string>("Senha")
+                    b.Property<byte[]>("SenhaHash")
                         .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("senha");
+                        .HasColumnType("longblob")
+                        .HasColumnName("senhaHash");
 
                     b.HasKey("Id");
 

@@ -1,5 +1,7 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using OficinasAPI.Business;
+using OficinasAPI.Business.Interface;
 using OficinasAPI.Config;
 using OficinasAPI.Model.Context;
 using OficinasAPI.Repository;
@@ -19,7 +21,8 @@ builder.Services.AddDbContext<MySQLContext>(options => options
 IMapper mapper = MappingConfig.RegisterMaps().CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-builder.Services.AddScoped<IOficinaRepository, OficinaRepository>();
+builder.Services.AddTransient<IOficinaRepository, OficinaRepository>();
+builder.Services.AddTransient<IOficinaBusiness, OficinaBusiness>();
 
 builder.Services.AddControllers();
 

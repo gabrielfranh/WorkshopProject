@@ -11,6 +11,7 @@ namespace AgendamentoAPI.Config
             var mappingConfig = new MapperConfiguration(config =>
             {
                 config.CreateMap<AgendamentoDTO, Agendamento>().ReverseMap();
+                config.CreateMap<Oficina, OficinaDTO>().ForMember(x => x.Senha, t => t.Ignore()).ReverseMap();
             });
             return mappingConfig;
         }

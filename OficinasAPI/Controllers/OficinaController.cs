@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using OficinasAPI.DTO;
-using OficinasAPI.Repository.Interface;
+using OficinasAPI.Business.Interface;
 
 namespace OficinasAPI.Controllers
 {
@@ -8,18 +8,18 @@ namespace OficinasAPI.Controllers
     [ApiController]
     public class OficinaController : ControllerBase
     {
-        private readonly IOficinaRepository _oficinaRepository;
+        private readonly IOficinaBusiness _oficinaBusiness;
 
-        public OficinaController(IOficinaRepository oficinaRepository)
+        public OficinaController(IOficinaBusiness oficinaBusiness)
         {
-            _oficinaRepository = oficinaRepository;
+            _oficinaBusiness = oficinaBusiness;
         }
 
         // GET: api/<OficinaController>
         [HttpGet]
         public async Task<ActionResult<List<OficinaDTO>>> Get()
         {
-            var oficinas =  await _oficinaRepository.GetAll();
+            var oficinas =  await _oficinaBusiness.GetAll();
             if(oficinas.Any())
                 return Ok(oficinas);
             return NotFound();
@@ -29,7 +29,7 @@ namespace OficinasAPI.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<OficinaDTO>> GetById(int id)
         {
-            var oficina =  await _oficinaRepository.GetById(id);
+            var oficina =  await _oficinaBusiness.GetById(id);
             if(oficina == null)
                 return NotFound();
             return Ok(oficina);
@@ -42,7 +42,7 @@ namespace OficinasAPI.Controllers
             if (oficinaDTO == null)
                 return BadRequest();
 
-            var oficina =  await _oficinaRepository.Create(oficinaDTO);
+            var oficina =  await _oficinaBusiness.Create(oficinaDTO);
             return Ok(oficina);
         }
 
@@ -53,7 +53,7 @@ namespace OficinasAPI.Controllers
             if (oficinaDTO == null)
                 return BadRequest();
 
-            var oficina =  await _oficinaRepository.Update(oficinaDTO);
+            var oficina =  await _oficinaBusiness.Update(oficinaDTO);
             return Ok(oficina);
         }
 
@@ -61,7 +61,7 @@ namespace OficinasAPI.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> Delete(int id)
         {
-            var response = await _oficinaRepository.Delete(id);
+            var response = await _oficinaBusiness.Delete(id);
 
             if (response)
                 return Ok(response);

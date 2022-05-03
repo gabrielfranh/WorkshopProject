@@ -1,6 +1,7 @@
 ﻿using OficinasAPI.Model.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Utils;
 
 namespace OficinasAPI.Model
 {
@@ -11,13 +12,16 @@ namespace OficinasAPI.Model
         [Required]
         public DateTime Data { get; set; }
 
+        [ForeignKey("Oficina")]
         public int OficinaId { get; set; }
-
-        public virtual Oficina Oficina { get; set; }
+        public Oficina Oficina { get; set; }
 
         [Column("tipoServico")]
         [Required]
-        public int TipoServico { get; set; }
+        public TipoServicoEnum TipoServico { get; set; }
 
+        [Column("unidadeTrabalhoServico")]
+        [Required]
+        public int? UnidadeTrabalhoServico { get; set; }
     }
 }

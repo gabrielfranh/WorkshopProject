@@ -4,6 +4,7 @@ using AgendamentoAPI.Model.Context;
 using AgendamentoAPI.Repository.Interface;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 namespace AgendamentoAPI.Repository
 {
@@ -58,6 +59,12 @@ namespace AgendamentoAPI.Repository
         {
             var agendamento = await _context.Agendamentos.FirstOrDefaultAsync(x => x.Id == id);
             return _mapper.Map<AgendamentoDTO>(agendamento);
+        }
+
+        public List<AgendamentoDTO> GetByDate(DateTime data)
+        {
+            var agendamento = _context.Agendamentos.Where(x => x.Data.Date == data.Date).ToList();
+            return _mapper.Map<List<AgendamentoDTO>>(agendamento);
         }
 
         public async  Task<AgendamentoDTO> Update(AgendamentoDTO AgendamentoDTO)

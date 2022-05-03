@@ -14,5 +14,6 @@ namespace AgendamentoAPI.Model.Context
         }
 
         public DbSet<Agendamento> Agendamentos { get; set; }
+        public DbSet<Oficina> Oficinas { get; set; }
     }
 }

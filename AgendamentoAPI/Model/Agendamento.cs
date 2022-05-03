@@ -1,6 +1,7 @@
 ﻿using AgendamentoAPI.Model.Base;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Utils;
 
 namespace AgendamentoAPI.Model
 {
@@ -17,7 +18,11 @@ namespace AgendamentoAPI.Model
 
         [Column("tipoServico")]
         [Required]
-        public int TipoServico { get; set; }
+        public TipoServicoEnum TipoServico { get; set; }
+
+        [Column("unidadeTrabalhoServico")]
+        [Required]
+        public int? UnidadeTrabalhoServico { get; set; }
 
     }
 }

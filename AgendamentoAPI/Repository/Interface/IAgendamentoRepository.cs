@@ -8,6 +8,8 @@ namespace AgendamentoAPI.Repository.Interface
 
         public Task<AgendamentoDTO> GetById(int id);
 
+        public List<AgendamentoDTO> GetByDate(DateTime data);
+
         public Task<AgendamentoDTO> Create(AgendamentoDTO AgendamentoDTO);
 
         public Task<AgendamentoDTO> Update(AgendamentoDTO AgendamentoDTO);

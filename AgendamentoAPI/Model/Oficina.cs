@@ -24,9 +24,8 @@ namespace AgendamentoAPI.Model
         [Required]
         public int CargaTrabalhoDiaria { get; set; }
 
-        [Column("senha")]
-        [Required]
-        public string Senha { get; set; }
+        [Column("senhaHash")]
+        public byte[] SenhaHash { get; set; }
 
         public virtual ICollection<Agendamento> Agendamentos { get; set; }
     }

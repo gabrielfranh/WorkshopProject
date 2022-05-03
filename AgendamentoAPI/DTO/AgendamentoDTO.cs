@@ -1,4 +1,6 @@
-﻿namespace AgendamentoAPI.DTO
+﻿using Utils;
+
+namespace AgendamentoAPI.DTO
 {
     public class AgendamentoDTO
     {
@@ -8,6 +10,8 @@
 
         public int OficinaId { get; set; }
 
-        public int TipoServico { get; set; }
+        public TipoServicoEnum TipoServico { get; set; }
+
+        public int? UnidadeTrabalhoServico { get; set; }
     }
 }
