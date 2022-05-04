@@ -55,10 +55,10 @@ namespace AgendamentoAPI.Repository
             return _mapper.Map<List<AgendamentoDTO>>(agendamentos);
         }
 
-        public async Task<AgendamentoDTO> GetById(int id)
+        public async Task<List<AgendamentoDTO>> GetAgendamentosByDate(DateTime datainicial, DateTime dataFinal)
         {
-            var agendamento = await _context.Agendamentos.FirstOrDefaultAsync(x => x.Id == id);
-            return _mapper.Map<AgendamentoDTO>(agendamento);
+            var agendamentosFiltrados = await _context.Agendamentos.Where(x => x.Data.Date >= datainicial.Date && x.Data.Date <= dataFinal.Date).ToListAsync();
+            return _mapper.Map<List<AgendamentoDTO>>(agendamentosFiltrados);
         }
 
         public List<AgendamentoDTO> GetByDate(DateTime data)

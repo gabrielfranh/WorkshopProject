@@ -57,7 +57,7 @@ namespace AgendamentoAPI.Business
         {
             var senhaHash = CreatePasswordHash(loginDTO.Senha);
 
-            var oficinaLogin = _oficinaRepository.GetByCnpjSenha(loginDTO.Cnpj, senhaHash);
+            var oficinaLogin = await _oficinaRepository.GetByCnpjSenha(loginDTO.Cnpj, senhaHash);
 
             if (oficinaLogin == null)
                 return false;

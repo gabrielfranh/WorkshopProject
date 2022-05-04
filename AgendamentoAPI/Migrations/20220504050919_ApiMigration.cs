@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace AgendamentoAPI.Migrations
 {
-    public partial class AddingOficinaMigration : Migration
+    public partial class ApiMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -40,7 +40,8 @@ namespace AgendamentoAPI.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     data = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     OficinaId = table.Column<int>(type: "int", nullable: false),
-                    tipoServico = table.Column<int>(type: "int", nullable: false),
+                    tipoServico = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     unidadeTrabalhoServico = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>

@@ -3,8 +3,6 @@ using AgendamentoAPI.DTO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-// For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-
 namespace AgendamentoAPI.Controllers
 {
     [Route("api/[controller]")]
@@ -18,7 +16,6 @@ namespace AgendamentoAPI.Controllers
             _agendamentoBusiness = agendamentoBusiness;
         }
 
-        // GET: api/<AgendamentoController>
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<List<AgendamentoDTO>>> GetAll()
@@ -30,42 +27,44 @@ namespace AgendamentoAPI.Controllers
             return NoContent();
         }
 
-        // GET api/<AgendamentoController>/5
-        [HttpGet("{id}")]
+        [HttpPost("/Data")]
         [Authorize]
-        public async Task<ActionResult<AgendamentoDTO>> GetById(int id)
+        public async Task<ActionResult<List<AgendamentoDTO>>> AgendamentosByDate([FromBody] FiltroDataDTO datas)
         {
-            var agendamento = await _agendamentoBusiness.GetById(id);
-            if (agendamento == null)
+            if (datas == null)
+                return BadRequest("Datas não informadas");
+            else if (datas.DataFinal < datas.DataInicial)
+                return BadRequest("Data final menor que a data inicial");
+
+            var agendamentosFiltrados = await _agendamentoBusiness.GetAgendamentosByDate(datas.DataInicial, datas.DataFinal);
+            if (agendamentosFiltrados == null)
                 return NotFound();
-            return Ok(agendamento);
+
+            return Ok(agendamentosFiltrados);
         }
 
-        // POST api/<AgendamentoController>
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<AgendamentoDTO>> Post([FromBody] AgendamentoDTO agendamentoDTO)
         {
             if (agendamentoDTO == null)
-                return BadRequest();
+                return BadRequest("Agendamento vazio");
 
             var agendamento = await _agendamentoBusiness.Create(agendamentoDTO);
             return Ok(agendamento);
         }
 
-        // PUT api/<AgendamentoController>/5
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult<AgendamentoDTO>> Put([FromBody] AgendamentoDTO agendamentoDTO)
         {
             if (agendamentoDTO == null)
-                return BadRequest();
+                return BadRequest("Agendamento vazio");
 
             var agendamento = await _agendamentoBusiness.Update(agendamentoDTO);
             return Ok(agendamento);
         }
 
-        // DELETE api/<AgendamentoController>/5
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<ActionResult> Delete(int id)
@@ -75,7 +74,7 @@ namespace AgendamentoAPI.Controllers
             if (response)
                 return Ok(response);
             else
-                return NotFound();
+                return NotFound("Não foi possível deletar");
         }
     }
 }

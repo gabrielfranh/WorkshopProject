@@ -18,7 +18,7 @@ namespace AgendamentoAPI.Model
 
         [Column("tipoServico")]
         [Required]
-        public TipoServicoEnum TipoServico { get; set; }
+        public string TipoServico { get; set; }
 
         [Column("unidadeTrabalhoServico")]
         [Required]

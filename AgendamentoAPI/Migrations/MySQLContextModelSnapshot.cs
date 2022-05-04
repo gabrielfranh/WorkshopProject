@@ -33,8 +33,9 @@ namespace AgendamentoAPI.Migrations
                     b.Property<int>("OficinaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TipoServico")
-                        .HasColumnType("int")
+                    b.Property<string>("TipoServico")
+                        .IsRequired()
+                        .HasColumnType("longtext")
                         .HasColumnName("tipoServico");
 
                     b.Property<int?>("UnidadeTrabalhoServico")

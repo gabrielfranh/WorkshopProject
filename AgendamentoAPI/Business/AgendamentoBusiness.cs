@@ -2,6 +2,7 @@
 using AgendamentoAPI.DTO;
 using AgendamentoAPI.Repository.Interface;
 using System.Text.Json;
+using Utils;
 
 namespace AgendamentoAPI.Business
 {
@@ -20,30 +21,30 @@ namespace AgendamentoAPI.Business
         {
             // Verificar final de semana
             if (agendamentoDTO.Data.DayOfWeek == DayOfWeek.Saturday || agendamentoDTO.Data.DayOfWeek == DayOfWeek.Sunday)
-                throw new Exception();
+                throw new Exception("Agendamento apenas para dias úteis");
 
             var agendamentosNoDia = _agendamentoRepository.GetByDate(agendamentoDTO.Data.Date);
 
             var unidadesAgendadas = agendamentosNoDia?.Count > 0 ? agendamentosNoDia?.Sum(x => x.UnidadeTrabalhoServico) : 0;
 
+            agendamentoDTO.UnidadeTrabalhoServico = (int)Enum.Parse(typeof(TipoServicoEnum), agendamentoDTO.TipoServico);
+
             var oficina = await _oficinaRepository.GetById(agendamentoDTO.OficinaId);
 
             if (oficina == null)
-                throw new Exception();
+                throw new Exception($"Oficina com id {agendamentoDTO.OficinaId} não existe");
 
-            if(agendamentoDTO.Data.DayOfWeek == DayOfWeek.Thursday && agendamentoDTO.Data.DayOfWeek == DayOfWeek.Friday)
+            if(agendamentoDTO.Data.DayOfWeek == DayOfWeek.Thursday || agendamentoDTO.Data.DayOfWeek == DayOfWeek.Friday)
             {
                 var cargaAmpliada = oficina.CargaTrabalhoDiaria + 0.3 * oficina.CargaTrabalhoDiaria;
-                if(cargaAmpliada < unidadesAgendadas)
+                if(cargaAmpliada < unidadesAgendadas + agendamentoDTO.UnidadeTrabalhoServico)
                 {
-                    throw new Exception();
+                    throw new Exception("Carga de trabalho deste dia foi excedida");
                 }
                 
             }
-            else if (oficina.CargaTrabalhoDiaria < unidadesAgendadas)
-                throw new Exception();
-
-            agendamentoDTO.UnidadeTrabalhoServico = (int)agendamentoDTO.TipoServico;
+            else if (oficina.CargaTrabalhoDiaria < unidadesAgendadas + agendamentoDTO.UnidadeTrabalhoServico)
+                throw new Exception("Carga de trabalho deste dia foi excedida");
 
             return await _agendamentoRepository.Create(agendamentoDTO);
         }
@@ -58,9 +59,9 @@ namespace AgendamentoAPI.Business
                 return await _agendamentoRepository.GetAll();
         }
 
-        public async Task<AgendamentoDTO> GetById(int id)
+        public async Task<List<AgendamentoDTO>> GetAgendamentosByDate(DateTime datainicial, DateTime dataFinal)
         {
-            return await _agendamentoRepository.GetById(id);
+            return await _agendamentoRepository.GetAgendamentosByDate(datainicial, dataFinal);
         }
 
         public List<AgendamentoDTO> GetByDate(DateTime date)
@@ -71,7 +72,7 @@ namespace AgendamentoAPI.Business
         public async Task<AgendamentoDTO> Update(AgendamentoDTO agendamentoDTO)
         {
             if (agendamentoDTO.Data.DayOfWeek == DayOfWeek.Saturday || agendamentoDTO.Data.DayOfWeek == DayOfWeek.Sunday)
-                throw new Exception();
+                throw new Exception("Agendamento apenas para dias úteis");
 
             var agendamentosNoDia = _agendamentoRepository.GetByDate(agendamentoDTO.Data.Date);
 
@@ -79,17 +80,22 @@ namespace AgendamentoAPI.Business
 
             var oficina = await _oficinaRepository.GetById(agendamentoDTO.OficinaId);
 
-            if (agendamentoDTO.Data.DayOfWeek == DayOfWeek.Thursday && agendamentoDTO.Data.DayOfWeek == DayOfWeek.Friday)
+            agendamentoDTO.UnidadeTrabalhoServico = (int)Enum.Parse(typeof(TipoServicoEnum), agendamentoDTO.TipoServico);
+
+            if (oficina == null)
+                throw new Exception($"Oficina com id {agendamentoDTO.OficinaId} não existe");
+
+            if (agendamentoDTO.Data.DayOfWeek == DayOfWeek.Thursday || agendamentoDTO.Data.DayOfWeek == DayOfWeek.Friday)
             {
                 var cargaAmpliada = oficina.CargaTrabalhoDiaria + 0.3 * oficina.CargaTrabalhoDiaria;
-                if (cargaAmpliada < unidadesAgendadas)
+                if (cargaAmpliada < unidadesAgendadas + agendamentoDTO.UnidadeTrabalhoServico)
                 {
-                    throw new Exception();
+                    throw new Exception("Carga de trabalho deste dia foi excedida");
                 }
 
             }
-            else if (oficina.CargaTrabalhoDiaria < unidadesAgendadas)
-                throw new Exception();
+            else if (oficina.CargaTrabalhoDiaria < unidadesAgendadas + agendamentoDTO.UnidadeTrabalhoServico)
+                throw new Exception("Carga de trabalho deste dia foi excedida");
 
             return await _agendamentoRepository.Update(agendamentoDTO);
         }

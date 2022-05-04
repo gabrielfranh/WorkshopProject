@@ -10,7 +10,7 @@ namespace AgendamentoAPI.DTO
 
         public int OficinaId { get; set; }
 
-        public TipoServicoEnum TipoServico { get; set; }
+        public string TipoServico { get; set; }
 
         public int? UnidadeTrabalhoServico { get; set; }
     }

@@ -56,7 +56,7 @@ namespace AgendamentoAPI.Repository
 
         public async Task<OficinaDTO> GetByCnpjSenha(string cnpj, byte[] senhaHash)
         {
-            var oficina = await _context.Oficinas.FirstOrDefaultAsync(x => x.Cnpj == cnpj && x.SenhaHash == senhaHash);
+            var oficina = await _context.Oficinas.Where(x => x.Cnpj == cnpj && x.SenhaHash.Equals(senhaHash)).FirstOrDefaultAsync();
             return _mapper.Map<OficinaDTO>(oficina);
         }
 

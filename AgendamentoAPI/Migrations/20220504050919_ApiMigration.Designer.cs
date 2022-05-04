@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AgendamentoAPI.Migrations
 {
     [DbContext(typeof(MySQLContext))]
-    [Migration("20220503042159_AddingOficinaMigration")]
-    partial class AddingOficinaMigration
+    [Migration("20220504050919_ApiMigration")]
+    partial class ApiMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,8 +35,9 @@ namespace AgendamentoAPI.Migrations
                     b.Property<int>("OficinaId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TipoServico")
-                        .HasColumnType("int")
+                    b.Property<string>("TipoServico")
+                        .IsRequired()
+                        .HasColumnType("longtext")
                         .HasColumnName("tipoServico");
 
                     b.Property<int?>("UnidadeTrabalhoServico")
