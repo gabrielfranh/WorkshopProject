@@ -27,9 +27,20 @@ namespace AgendamentoAPI.Controllers
             return NoContent();
         }
 
-        [HttpPost("/Data")]
+        [HttpGet("servicosDia")]
         [Authorize]
-        public async Task<ActionResult<List<AgendamentoDTO>>> AgendamentosByDate([FromBody] FiltroDataDTO datas)
+        public async Task<ActionResult<List<string>>> GetServicosDia()
+        {
+            var agendamentos = await _agendamentoBusiness.GetServicosDia();
+            if (agendamentos.Any())
+                return Ok(agendamentos);
+
+            return NoContent();
+        }
+
+        [HttpPost("servicosData")]
+        [Authorize]
+        public async Task<ActionResult<List<AgendamentoDTO>>> GetAgendamentosByDate([FromBody] FiltroDataDTO datas)
         {
             if (datas == null)
                 return BadRequest("Datas não informadas");

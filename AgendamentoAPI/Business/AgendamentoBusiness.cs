@@ -114,5 +114,10 @@ namespace AgendamentoAPI.Business
 
             return JsonSerializer.Deserialize<OficinaDTO>(data);
         }
+
+        public async Task<List<string>> GetServicosDia()
+        {
+            return await _agendamentoRepository.GetServicosDia();
+        }
     }
 }

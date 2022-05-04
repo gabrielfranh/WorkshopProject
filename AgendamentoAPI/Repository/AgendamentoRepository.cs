@@ -74,5 +74,11 @@ namespace AgendamentoAPI.Repository
             await _context.SaveChangesAsync();
             return _mapper.Map<AgendamentoDTO>(agendamento);
         }
+
+        public async Task<List<string>> GetServicosDia()
+        {
+            var servicos = await _context.Agendamentos.Where(x => x.Data.Date == DateTime.Today.Date).Select(x => x.TipoServico).ToListAsync();
+            return servicos;
+        }
     }
 }
